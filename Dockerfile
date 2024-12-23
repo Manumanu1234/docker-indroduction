@@ -1,8 +1,20 @@
-# syntax=docker/dockerfile:1
+# Use an official Node.js runtime as the base image
+FROM node:alpine
 
-FROM node:lts-alpine
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /server
+
+# Copy package.json and package-lock.json (if present)
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application files
 COPY . .
-RUN yarn install --production
-CMD ["node", "src/index.js"]
+
+# Expose the application port (3000 in this case)
 EXPOSE 3000
+
+# Run the app
+CMD ["node", "app.js"]

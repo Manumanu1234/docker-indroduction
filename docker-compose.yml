@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  mongo_db:
+    container_name: mongo_db
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+    networks:
+      - mynetwork
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      APP_NAME: LearnDocker
+      PORT: 3000
+      DB_URI: mongodb://mongo_db:27017  
+    depends_on:
+      - mongo_db
+    networks:
+      - mynetwork
+
+volumes:
+  mongo_db: {}
+
+networks:
+  mynetwork:
+    driver: bridge
